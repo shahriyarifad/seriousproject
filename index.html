@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Act &amp; Gain</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--b:#1e6bff;--bd:#0b3aa8;--bl:#e1efff;--t:#0c2c8f;--m:#6f7ea3;--l:#cfe3fa;--bg:#eef6ff;--ok:#12b76a;--er:#e5484d;--g:linear-gradient(180deg,#4aa8ff,#0a62f0)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#cfe8ff;color:var(--t);font-family:Poppins,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow:hidden}
+button,input,select{font:inherit;color:inherit;border:0;outline:0;background:none}
+button{cursor:pointer}
+#app{max-width:480px;height:100dvh;margin:auto;display:flex;flex-direction:column;background:linear-gradient(180deg,#a5d3fd 0%,#cfe8ff 32%,#eef6ff 62%,#fff 100%);position:relative}
+.top{height:53.2px;flex:none;display:flex;align-items:center;justify-content:center;position:relative}
+.top h1{font-size:21px;font-weight:800;color:#1253d6;display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
+.vb{position:relative;width:23.8px;height:23.8px;color:#1e6bff;filter:drop-shadow(0 3px 5px rgba(30,107,255,.35))}
+.vb .fa-certificate{position:absolute;inset:0;font-size:23.8px;line-height:23.8px}
+.vb .fa-check{position:absolute;left:0;right:0;top:8.8px;text-align:center;font-size:12.3px;line-height:12.3px;color:#fff}
+#bk{position:absolute;left:12.3px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.7);color:#1565f0;display:none;align-items:center;justify-content:center}
+main{flex:1;min-height:0;position:relative}
+.page{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;padding:6px 11.2px 12.3px}
+.page.on{display:flex}
+#home{overflow:hidden}
+.scroll{flex:1;overflow-y:auto;min-height:0;padding:4px 2px 10.6px}
+h2{font-size:15.4px;margin:2px 0 10.6px;color:var(--t)}
+nav{flex:none;display:flex;background:#e4f0fd;border-radius:21px 21px 0 0;padding:12.3px 0 max(10.6px,env(safe-area-inset-bottom));box-shadow:0 -4px 14px rgba(60,130,220,.12)}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.9px;font-weight:600;color:#8a8fb8}
+nav button i{font-size:19.6px}
+nav button:after{content:"";width:49px;height:4px;border-radius:3px;background:transparent;margin-top:5px}
+nav button.on{color:#1565f0}
+nav button.on:after{background:#1565f0}
+.pr{display:flex;align-items:center;gap:10.6px;flex:none}
+.pn{flex:1;min-width:0}
+.pn b{display:block;font-size:13.3px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.av{width:40.6px;height:40.6px;border-radius:50%;background:linear-gradient(160deg,#4cb0ff,#0a62f0);color:#fff;display:grid;place-items:center;position:relative;overflow:hidden;flex:none;font-size:15.4px}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pr .av{width:39.2px;height:39.2px;overflow:visible;box-shadow:0 0 0 3px #fff,0 0 0 4px #7fb8f5}
+.pr .av img{border-radius:50%}
+.av.sq{width:70px;height:70px;font-size:26.6px;overflow:visible;box-shadow:0 0 0 8px rgba(255,255,255,.55),0 0 0 9px #cfe6fb}
+.bal{background:rgba(255,255,255,.55);border:1px solid #8ecbf5;color:#0b8fd6;border-radius:69.3px;padding:3px 12.6px;font-size:12.3px;font-weight:500;min-width:72.8px;text-align:center}
+.ics{display:flex;gap:10.6px}
+.ib{width:23.8px;height:23.8px;color:#1060f0;font-size:17.5px;display:grid;place-items:center}
+.car{position:relative;height:86.8px;border-radius:15.4px;overflow:hidden;margin-top:12.3px;flex:none;border:1px solid #8fc3f5}
+.cc{position:absolute;inset:0;transition:transform .55s ease;padding:12.3px 11.2px;display:flex;align-items:center;gap:12.3px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(150,200,250,.4))}
+.cc:before,.cc:after{content:"";position:absolute;border-radius:50%;width:120%;height:63px;left:-10%;bottom:-50px;background:rgba(120,180,245,.28)}
+.cc:after{left:45%;bottom:-62px;background:rgba(100,170,245,.25)}
+.ci,.ct{position:relative;z-index:1}
+.ci{width:37.8px;height:37.8px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-size:15.4px;flex:none;box-shadow:0 6px 12.3px rgba(10,98,240,.3)}
+.ct{flex:1;min-width:0}
+.ct b{font-size:11.9px;color:var(--t)}
+.ct p{font-size:10.6px;color:var(--m);margin:2px 0 8px;line-height:1.35}
+.ct button{background:var(--g);color:#fff;font-weight:600;font-size:11.4px;padding:6px 12.6px;border-radius:69.3px}
+.dots{display:flex;justify-content:center;align-items:center;gap:9px;margin:9.7px 0;flex:none}
+.dots i{width:8.8px;height:8.8px;border-radius:50%;background:#9ccbf7;transition:.3s}
+.dots i.on{background:#1553d8;width:11.4px;height:11.4px}
+.tb{display:flex;justify-content:space-between;position:relative;margin-bottom:10.6px;flex:none}
+.pill{background:#fff;color:var(--t);border-radius:69.3px;padding:0 14px;height:35px;font-weight:600;font-size:13.3px;display:flex;gap:10.6px;align-items:center;width:37%;box-shadow:0 4px 12.3px rgba(50,120,210,.12)}
+.pill>i:first-child{color:#1060f0}
+.pill .fa-chevron-down{margin-inline-start:auto;font-size:12.3px;color:#1565f0}
+.pill.ad{background:var(--g);color:#fff;justify-content:center;box-shadow:0 8px 12.6px rgba(10,88,232,.35)}
+.pill.ad{width:31%}
+.pill.ad i{color:#fff;font-size:15.4px}
+.dd{position:absolute;top:40.6px;left:0;background:#fff;border-radius:12.6px;box-shadow:0 10.6px 21px rgba(15,60,140,.2);z-index:5;display:none;min-width:133px;overflow:hidden}
+.dd.on{display:block}
+.dd button{display:block;width:100%;text-align:start;padding:11.4px 12.6px;font-size:13.2px;font-weight:500}
+.dd button.on{background:var(--bl);color:#1060f0;font-weight:700}
+.tk{display:flex;align-items:center;gap:12.3px;padding:12.3px;border-radius:16.8px;margin-bottom:10.6px;background:#fff;box-shadow:0 6px 12.6px rgba(40,110,200,.1)}
+.tk .i{flex:1;min-width:0}
+.tk b{display:block;font-size:11.9px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk small,.mt{color:var(--m);font-size:12.3px}
+.rw{display:flex;align-items:center;gap:8.8px}
+.rw span{display:flex;align-items:center;gap:8px;background:#eaf2ff;border-radius:69.3px;padding:8.8px 12.3px;font-weight:700;font-size:11.9px;color:var(--t);white-space:nowrap}
+.rw span i{color:#1a6cf0}
+.rw>i{color:#8aa0cc;font-size:13.2px}
+.rw:disabled{opacity:.55}
+.cd{border-radius:19.6px;padding:11.2px;margin-bottom:10.6px;background:linear-gradient(160deg,rgba(255,255,255,.85),rgba(255,255,255,.45));border:1px solid #fff;box-shadow:0 8px 15.4px rgba(50,120,210,.13)}
+.ic{display:grid;place-items:center;border-radius:50%;flex:none;background:var(--bl);color:#1565f0;width:32.2px;height:32.2px;font-size:14px}
+.pc{display:flex;gap:12.6px;align-items:center;padding:14px}
+.pc b{font-size:16.8px;font-weight:700;display:block}
+.un{display:inline-block;background:#e0f3ff;border:1px solid #9fd5f5;color:#12a0e6;border-radius:69.3px;padding:4px 14px;font-size:13.3px;margin:6px 0}
+#pid{display:block;font-size:12.6px}
+.r2{display:flex;gap:8.8px;margin-bottom:10.6px}
+.r2 .btn,.r2 .mc{flex:1}
+.mc{display:flex;align-items:center;gap:8px;padding:10.6px 8.8px;margin:0;text-align:start}
+.mc b{display:block;font-size:11.2px;font-weight:700}
+.mc small{font-size:11.4px;color:var(--m)}
+.mc>i{margin-inline-start:auto;color:#1e7bff}
+.dot{display:inline-block;width:8.8px;height:8.8px;border-radius:50%;background:var(--ok);margin-inline-start:6px}
+.wh{display:flex;align-items:center;gap:10.6px;margin-bottom:10.6px}
+.wh .ic{width:39.2px;height:39.2px;font-size:16.8px}
+.wh .i{flex:1}
+.wh h3{font-size:18.2px;font-weight:700}
+.wh small{font-size:12.3px;color:var(--m)}
+.hb{display:flex;gap:8px;align-items:center;background:var(--bl);color:#1060f0;border-radius:69.3px;padding:11.4px 12.3px;font-size:14px}
+.hb .fa-chevron-right{font-size:11.4px}
+.wr{display:flex;align-items:center;gap:12.3px;border:1px solid #d3e6fa;border-radius:69.3px;padding:8px 12.6px 8px 8.8px;background:rgba(255,255,255,.6);margin-bottom:8.8px;font-weight:700;font-size:14.7px;height:44.8px}
+.wr .ic{background:var(--g);color:#fff}
+.wr .lb{width:73.5px;font-size:12.6px}
+.btn{width:100%;height:40.6px;border-radius:69.3px;background:var(--g);color:#fff;font-weight:600;font-size:12.6px;display:flex;gap:10.6px;align-items:center;justify-content:center;box-shadow:0 8px 12.6px rgba(10,98,240,.3)}
+.btn:disabled,.btn.dis{opacity:.45}
+.btn.o{background:rgba(255,255,255,.5);color:#1060f0;border:1.5px solid #1e7bff;box-shadow:none}
+.cd .r2{margin:0}
+.mr{display:flex;align-items:center;gap:12.3px;padding:10.6px 0;width:100%;border-bottom:1px solid #d3e6fa;font-weight:700;font-size:13.3px;text-align:start}
+.mr:last-child{border:0}
+.mr>i{margin-inline-start:auto;color:#1e7bff;font-size:13.2px}
+.ov{position:fixed;inset:0;background:rgba(10,30,80,.5);display:none;align-items:center;justify-content:center;padding:11.2px;z-index:20}
+.ov.on{display:flex}
+.md{width:100%;max-width:410px;max-height:92dvh;overflow-y:auto;background:linear-gradient(180deg,#eaf4ff,#d9eafc);border-radius:23.8px;border:1px solid #fff;padding:14px;box-shadow:0 14px 35px rgba(10,50,130,.3);animation:pop .2s}
+@keyframes pop{from{transform:scale(.94);opacity:0}}
+.mh{display:flex;align-items:center;gap:12.3px;margin-bottom:11.2px}
+.mh .ic{width:40.6px;height:40.6px;font-size:16.8px;background:#d6e8fd}
+.mh .i{flex:1;min-width:0}
+.mh h3{font-size:17.5px;font-weight:700;line-height:1.1}
+.mh small{display:block;color:var(--m);font-size:11.4px;line-height:1.3;margin-top:3px}
+.x{align-self:flex-start;width:23.8px;height:23.8px;color:#1e7bff;font-size:18.2px}
+label{font-size:12.3px;font-weight:600;color:var(--t)}
+.fc{background:rgba(255,255,255,.65);border:1px solid #d6e8fb;border-radius:16.8px;padding:10.6px;margin-bottom:10.6px}
+.fh{display:flex;align-items:center;gap:10.6px;font-weight:700;font-size:13.3px;margin-bottom:8.8px}
+.f{width:100%;background:#e9f3ff;border:1px solid #bcd9f6;border-radius:69.3px;padding:12.3px 15.4px;margin:6px 0 10.6px;font-size:11.2px;color:var(--t)}
+.fc .f{margin:0}
+.f::placeholder{color:#93a8cf}
+.f:focus{border-color:var(--b)}
+.f.ro{pointer-events:none}
+.sel{position:relative}
+.sel i{position:absolute;right:15.4px;top:50%;transform:translateY(-50%);color:#1e7bff}
+.q{display:flex;gap:8px}
+.q button{flex:1;height:35px;border:1px solid #bcd9f6;border-radius:69.3px;background:#eaf4ff;color:#1060f0;font-size:11.9px}
+.q button.on{background:var(--g);color:#fff;border-color:transparent}
+.note{font-size:11.4px;color:var(--m);margin:4px 0 10.6px;line-height:1.5}
+.mx{display:flex;justify-content:space-between;align-items:center;font-size:11.4px;color:var(--m);margin-bottom:10.6px}
+.mx button{color:#1060f0;font-weight:700;background:var(--bl);padding:6px 11.2px;border-radius:69.3px}
+.big{font-size:19.6px;font-weight:800;color:#1253d6;margin:2px 0 8px}
+.ck{display:flex;gap:10.6px;align-items:center;padding:12.3px 4px;border-bottom:1px solid var(--l);color:var(--m)}
+.ck i{font-size:15.4px}
+.ck.ok{color:var(--ok)}
+.ck.ok span{color:var(--t)}
+.pb{height:8px;background:var(--bl);border-radius:6px;overflow:hidden;margin:6px 0 3px}
+.pb i{display:block;height:100%;background:linear-gradient(90deg,#4aa8ff,#0a62f0);border-radius:6px}
+.ring{width:37.8px;height:37.8px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#1e6bff calc(var(--p)*1%),var(--bl) 0)}
+.ring span{width:29.4px;height:29.4px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:10.6px;font-weight:800}
+.bg{font-size:9.7px;padding:3px 8.8px;border-radius:69.3px;background:var(--bl);color:#1060f0;font-weight:700}
+.bg.ok{background:#e3f8ee;color:var(--ok)}
+.row{display:flex;align-items:center;gap:10.6px}
+.row .i{flex:1;min-width:0}
+.row b{display:block;font-size:13.2px}
+.lk{display:flex;gap:8px;align-items:center;margin:6px 0 8.8px}
+.lk .f{margin:0;font-size:11.4px}
+.lk .btn{width:35px;height:35px;flex:none}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:8.8px;margin-bottom:10.6px}
+.st div{background:rgba(255,255,255,.7);border-radius:14px;padding:10.6px 6px;text-align:center}
+.st b{display:block;font-size:15.4px;color:#1253d6}
+.st small{font-size:9.7px;color:var(--m)}
+.rk{width:22.4px;height:22.4px;border-radius:50%;background:var(--bl);color:#1060f0;display:grid;place-items:center;font-weight:800;font-size:11.4px;flex:none}
+details{border-bottom:1px solid var(--l);padding:10.6px 0}
+summary{font-weight:700;font-size:13.2px;cursor:pointer}
+details p{font-size:11.4px;color:var(--m);margin-top:8px;line-height:1.55}
+.lg{display:flex;align-items:center;gap:10.6px;padding:12.3px;background:rgba(255,255,255,.7);color:#1060f0;border-radius:69.3px;font-weight:700;text-decoration:none;margin-top:10.6px}
+#ts{position:fixed;left:50%;top:49px;transform:translate(-50%,-16px);background:var(--t);color:#fff;padding:9.7px 12.6px;border-radius:69.3px;font-size:12.3px;opacity:0;transition:.25s;z-index:30;pointer-events:none;max-width:90%;text-align:center}
+#ts.on{opacity:1;transform:translate(-50%,0)}
+.em{text-align:center;color:var(--m);padding:18.2px 0;font-size:12.3px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.top{height:50px}
+.top h1{font-size:19px;gap:6px;letter-spacing:-.2px}
+.vb{width:20px;height:20px;display:grid;place-items:center;filter:drop-shadow(0 2px 3px rgba(30,107,255,.3))}
+.vb>i{grid-area:1/1;position:static;line-height:1}
+.vb .fa-certificate{font-size:20px}
+.vb .fa-check{font-size:8px;transform:translateY(.3px)}
+.pill{font-size:14px;height:38px;padding:0 14px;gap:9px}
+.pill.ad{width:31%}
+.pill.ad i{font-size:15px}
+nav button{font-size:11px}
+nav button i{font-size:19px}
+nav button:after{width:34px;height:3px;margin-top:3px}
+nav{padding:8px 0 max(8px,env(safe-area-inset-bottom));border-radius:22px 22px 0 0}
+.btn{height:44px;font-size:14px;gap:8px}
+.lk .btn{width:40px;height:40px}
+.mh h3{font-size:19px}.mh small{font-size:11px}
+.x{font-size:20px}
+.wr{height:48px;font-size:16px}.wr .lb{font-size:14px;width:80px}
+.mr{font-size:15px}
+
+/* ---- v1 updates ---- */
+.top h1{color:#0b0b0f;font-size:20px;gap:7px}
+.vb{position:relative;display:block;width:1.1em;height:1.1em;filter:drop-shadow(0 1.5px 2.5px rgba(10,98,240,.4))}
+.vb:before,.vb:after{content:"";position:absolute;left:.15em;top:.15em;width:.8em;height:.8em;border-radius:.23em;background:linear-gradient(145deg,#4db0ff,#0a66f5)}
+.vb:after{transform:rotate(45deg)}
+.vb .fa-check{position:absolute;left:0;right:0;top:0;bottom:0;display:grid;place-items:center;font-size:.5em;line-height:1;transform:none;color:#fff;z-index:2}
+.bal{position:relative;display:block;width:112px;height:26px;min-width:0;padding:0;overflow:hidden;border-radius:99px;border:1px solid #7cc4f2;background:linear-gradient(135deg,#fff,#d6eeff);box-shadow:0 3px 10px rgba(30,140,230,.22)}
+.bal span{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:700;color:#0b84cf;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s}
+.bal .b2{transform:translateY(110%);opacity:0;color:#0b2a8a}
+.bal .b2 i{color:#1a6cf0}
+.bal.on .b1{transform:translateY(-110%);opacity:0}
+.bal.on .b2{transform:none;opacity:1}
+.bal em{font-style:normal}
+.ib{width:30px;height:30px;font-size:21px}
+.car{height:116px;border:0;border-radius:20px;box-shadow:0 10px 22px rgba(20,90,220,.28)}
+.cc{border-radius:20px;color:#fff;padding:14px 16px;gap:14px;background:linear-gradient(120deg,#1e6bff,#0a3fc9)}
+.cc.c2{background:linear-gradient(120deg,#10b8e8,#1e6bff)}
+.cc.c3{background:linear-gradient(120deg,#6a4bf5,#2a5bff)}
+.cc:before{width:150px;height:150px;left:auto;right:-40px;top:-50px;bottom:auto;background:rgba(255,255,255,.12)}
+.cc:after{width:90px;height:90px;left:auto;right:70px;top:auto;bottom:-45px;background:rgba(255,255,255,.1)}
+.ci{width:44px;height:44px;font-size:19px;background:rgba(255,255,255,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.ct b{font-size:14px;color:#fff}
+.ct p{font-size:11px;color:rgba(255,255,255,.88);margin:3px 0 9px}
+.ct button{background:#fff;color:#0a4fd6;font-size:12px;padding:6px 16px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.tb{margin-bottom:6px}
+.pill{height:40px;width:36%;padding:0 12px 0 8px;gap:8px;font-size:14px;font-weight:700;border:1px solid #cfe3fa;box-shadow:0 5px 14px rgba(50,120,210,.14)}
+.pill>i:first-child{width:26px;height:26px;border-radius:50%;background:#e1efff;display:grid;place-items:center;font-size:12px;color:#1060f0}
+.pill .fa-chevron-down{font-size:11px}
+.pill.ad{width:30%;border:0;padding:0 14px;gap:8px;justify-content:center;background:linear-gradient(135deg,#3da0ff,#0a52e0);box-shadow:0 8px 18px rgba(10,82,224,.4),inset 0 1px 0 rgba(255,255,255,.35)}
+.pill.ad i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:12px;color:#fff}
+.dd{top:44px}
+#home{padding-bottom:0}
+.scroll{padding:2px 2px 8px}
+nav{background:rgba(255,255,255,.9);border:1.5px solid #c3dbf7;border-bottom:0;border-radius:22px 22px 0 0;margin:0 6px;padding:6px 6px max(6px,env(safe-area-inset-bottom));box-shadow:0 -6px 18px rgba(60,130,220,.14)}
+nav button{padding:5px 0;border-radius:16px;gap:2px}
+nav button:after{display:none}
+nav button.on{background:#e3f0ff;color:#1565f0}
+#ts{top:auto;bottom:84px;transform:translate(-50%,14px);box-shadow:0 8px 20px rgba(10,40,120,.3)}
+#ts.on{transform:translate(-50%,0)}
+.tk .av{width:44px;height:44px;font-size:17px;font-weight:700}
+.tk .i{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.ch{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px}
+.ch i{font-size:9px}
+.ch.channel{background:#e1efff;color:#1565f0}
+.ch.bot{background:#ece6ff;color:#6a4bf5}
+.ch.link{background:#dcf7ec;color:#0e9f6e}
+.rw.rd span{background:linear-gradient(135deg,#22c58b,#0e9f6e);color:#fff;box-shadow:0 4px 10px rgba(14,159,110,.35)}
+.rw.rd span i{color:#fff}
+.md.fix{height:min(500px,84dvh);display:flex;flex-direction:column;overflow:hidden}
+.md.fix.s{height:min(410px,84dvh)}
+.md .sc{flex:1;min-height:0;overflow-y:auto;margin:0 -6px;padding:2px 6px}
+.ft{flex:none;padding-top:10px}
+.ft .btn{text-decoration:none;height:42px;font-size:14px}
+.ac{background:rgba(255,255,255,.75);border:1px solid #d6e8fb;border-radius:18px;margin-bottom:9px;padding:0}
+.ac[open]{background:#fff;border-color:#9cc8f7}
+.ac summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 12px;font-size:13px;font-weight:600}
+.ac summary::-webkit-details-marker{display:none}
+.ac summary .n{width:26px;height:26px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-size:11px;flex:none}
+.ac summary .ic{width:32px;height:32px;font-size:14px}
+.chv{margin-inline-start:auto;color:#1e7bff;font-size:11px;transition:transform .25s}
+.ac[open] .chv{transform:rotate(180deg)}
+.ac p{padding:0 14px 12px;margin:0;font-size:12px;color:var(--m);line-height:1.55}
+.sh{font-size:10.5px;font-weight:700;color:var(--m);text-transform:uppercase;letter-spacing:.7px;margin:4px 4px 8px}
+.sr{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.75);border:1px solid #d6e8fb;border-radius:18px;padding:10px 12px;margin-bottom:9px;width:100%;text-align:start;font-size:13px;font-weight:600;color:var(--t);text-decoration:none}
+.sr .ic{width:32px;height:32px;font-size:14px}
+.sr select{margin-inline-start:auto;background:#e9f3ff;border:1px solid #bcd9f6;border-radius:99px;padding:5px 10px;font-size:12px}
+.sr small{margin-inline-start:auto;color:var(--m);font-weight:500;font-size:11px}
+.sr>i:last-child{margin-inline-start:auto;color:#1e7bff;font-size:11px}
+.sr small+i:last-child{margin-inline-start:8px}
+.ver{flex:none;text-align:center;font-size:11px;color:var(--m);padding-top:8px;font-weight:500}
+.wr .ic.tn{background:none;overflow:hidden;box-shadow:0 3px 8px rgba(0,152,234,.35)}
+.tn svg{width:100%;height:100%;display:block}
+#ref,#stat{overflow:hidden}
+#ref>*,#stat>*{flex:none}
+#ref>.scroll,#stat>.scroll{flex:1}
+.scroll.e{display:flex}
+.emp{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 24px;gap:6px}
+.eo{position:relative;width:96px;height:96px;display:grid;place-items:center;margin-bottom:10px}
+.eo:before,.eo:after{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:50%;border:2px solid #9ccbf7;animation:rp 2.4s ease-out infinite}
+.eo:after{animation-delay:1.2s}
+@keyframes rp{from{transform:scale(.55);opacity:.9}to{transform:scale(1.25);opacity:0}}
+.ei{width:66px;height:66px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-size:27px;box-shadow:0 10px 22px rgba(10,98,240,.35);animation:fl 3s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-7px)}}
+.emp h4{font-size:16px;color:var(--t)}
+.emp p{font-size:12px;color:var(--m);line-height:1.5;max-width:240px}
+.emp .btn{width:auto;padding:0 22px;height:38px;margin-top:10px;font-size:13px}
+.hero{border-radius:22px;padding:14px;color:#fff;background:linear-gradient(120deg,#1e6bff,#0a3fc9);position:relative;overflow:hidden;box-shadow:0 10px 22px rgba(20,90,220,.28);margin-bottom:12px}
+.hero:before{content:"";position:absolute;right:-30px;top:-40px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.12)}
+.hero h2{color:#fff;font-size:18px;margin:0}
+.hero p{font-size:11.5px;opacity:.88;margin:2px 0 10px}
+.lv{position:absolute;right:12px;top:12px;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:99px}
+.lv i{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pu 1.4s infinite}
+@keyframes pu{50%{opacity:.35;transform:scale(.7)}}
+.hs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative}
+.hs div{background:rgba(255,255,255,.18);border-radius:14px;padding:8px 4px;text-align:center}
+.hs b{display:block;font-size:17px}
+.hs small{font-size:10px;opacity:.9}
+.pm{display:flex;justify-content:space-between;font-size:11px;color:var(--m)}
+.rc{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bg.act:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#1e6bff;margin-inline-end:5px;animation:pu 1.4s infinite}
+#splash{position:fixed;left:0;top:0;right:0;bottom:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#a5d3fd 0%,#cfe8ff 45%,#f4f9ff 100%);transition:opacity .5s,visibility .5s}
+#splash.out{opacity:0;visibility:hidden}
+.sp-c{display:flex;flex-direction:column;align-items:center;text-align:center;animation:up .7s ease both}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.sp-logo{width:84px;height:84px;border-radius:26px;background:var(--g);color:#fff;display:grid;place-items:center;font-size:36px;box-shadow:0 14px 30px rgba(10,98,240,.4);margin-bottom:18px;animation:fl 3s ease-in-out infinite}
+.sp-t{font-size:30px;font-weight:800;color:#0b0b0f;display:flex;align-items:center;gap:8px}
+.sp-c p{font-size:13px;color:var(--m);margin:6px 0 24px}
+.spin{width:34px;height:34px;border-radius:50%;border:3.5px solid #cfe3fa;border-top-color:#1e6bff;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.lbar{width:150px;height:5px;border-radius:5px;background:#d3e6fa;margin-top:18px;overflow:hidden}
+.lbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4aa8ff,#0a62f0);border-radius:5px;animation:ld 1.7s ease forwards}
+@keyframes ld{to{width:100%}}
+.sp-v{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));font-size:12px;color:var(--m);font-weight:600;letter-spacing:.4px}
+
+.vbd{width:1.15em;height:1.15em;display:block;flex:none;filter:drop-shadow(0 1.5px 2.5px rgba(10,98,240,.35))}
+.sp-c,.sp-logo{animation:none}
+.sp-logo.img{background:none;box-shadow:none;border-radius:0;width:96px;height:96px}
+.sp-logo img{width:100%;height:100%;object-fit:contain;display:block}
+
+.top h1{font-weight:600}
+.sp-t{font-weight:600}
+.ics{gap:8px}
+.pr{padding-left:6px}
+.sp-logo{width:128px;height:128px;border-radius:0;background:none;box-shadow:none;display:block;margin-bottom:22px;font-size:0}
+.sp-logo svg{width:100%;height:100%;display:block;border-radius:24%;box-shadow:0 14px 30px rgba(10,70,200,.28)}
+.lw{width:190px;margin-top:2px}
+.lrow{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--m);font-weight:500;margin-bottom:7px}
+.lrow b{font-size:15px;color:#1253d6;font-weight:700;font-variant-numeric:tabular-nums}
+.lbar{width:100%;height:7px;margin-top:0}
+.lbar i{animation:none;transition:none}
+.cc .wm{position:absolute;right:14px;bottom:10px;font-size:58px;opacity:.13;z-index:0}
+.ldm{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 0 18px;font-size:12px;font-weight:600;color:var(--m);animation:fi .4s ease}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}}
+.dt3{display:inline-flex;gap:4px}
+.dt3 i{width:7px;height:7px;border-radius:50%;background:#4aa8ff;animation:bn 1.2s ease-in-out infinite}
+.dt3 i:nth-child(2){animation-delay:.15s}
+.dt3 i:nth-child(3){animation-delay:.3s}
+@keyframes bn{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.ei2{position:relative;overflow:hidden;background:linear-gradient(120deg,#1e6bff,#0a3fc9);color:#fff;border-radius:18px;padding:12px 14px;margin-bottom:10px}
+.ei2:before{content:"";position:absolute;right:-24px;top:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.13)}
+.ei2 b{position:relative;font-size:14px}
+.ei2 p{position:relative;font-size:11.5px;line-height:1.5;opacity:.9;margin-top:4px}
+.eb{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.8);border:1px solid #d6e8fb;border-radius:20px;padding:12px;margin-bottom:10px;width:100%;text-align:start}
+.eb .i{flex:1;min-width:0}
+.eb .i b{display:block;font-size:14px;color:var(--t)}
+.eb small.hd{display:block;color:#1565f0;font-size:11px;font-weight:600;margin:1px 0 4px}
+.eb p{font-size:11.5px;color:var(--m);line-height:1.45;margin-bottom:7px}
+.eb>i{color:#1e7bff;font-size:12px}
+.ebi{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;font-size:19px;flex:none;align-self:flex-start}
+.ebi.a{background:var(--g)}
+.ebi.o{background:linear-gradient(160deg,#9b82ff,#5a3df0)}
+.ebi.g{background:linear-gradient(160deg,#2bd4ec,#0b7fe0)}
+
+html,body,button,input{font-family:Poppins,"Noto Sans","Noto Sans Arabic",system-ui,sans-serif}
+/* icons: bigger glyphs, same circles */
+.ic i,.ci i,.ebi i{font-size:1.2em}
+.ib{width:32px;height:32px;font-size:23px}
+.pill>i:first-child{font-size:14px}
+.pill.ad i{font-size:14px}
+.pill .fa-chevron-down{font-size:12.5px}
+nav button i{font-size:21px}
+.ch i{font-size:10.5px}
+.rw>i{font-size:15px}
+.rw span i{font-size:1.15em}
+.chv,.mr>i,.mc>i,.sr>i:last-child,.eb>i{font-size:13px}
+.x{font-size:22px}
+.hb{font-size:22px}
+.hb .fa-chevron-right{font-size:14px}
+.ei{font-size:30px}
+.dd .ck{font-size:12px}
+/* filter drawer */
+.dd{display:block;visibility:hidden;opacity:0;transform:scale(.92) translateY(-6px);transform-origin:top left;transition:opacity .18s,transform .18s,visibility .18s;top:46px;min-width:196px;padding:6px;border:1px solid #cfe3fa;border-radius:20px;background:#fff;box-shadow:0 14px 34px rgba(15,60,140,.22)}
+.dd.on{visibility:visible;opacity:1;transform:none}
+.dd:before{content:"";position:absolute;top:-6px;left:26px;width:11px;height:11px;background:#fff;border-left:1px solid #cfe3fa;border-top:1px solid #cfe3fa;transform:rotate(45deg)}
+.dd button{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;font-size:13px;font-weight:600;width:100%;margin-bottom:2px}
+.dd button:last-child{margin-bottom:0}
+.di{width:28px;height:28px;border-radius:50%;background:#e1efff;color:#1060f0;display:grid;place-items:center;font-size:13px;flex:none}
+.dd button.on{background:#eaf3ff;color:#1060f0}
+.dd button.on .di{background:var(--g);color:#fff}
+.dd .ck{margin-inline-start:auto;color:#1e7bff;opacity:0}
+.dd button.on .ck{opacity:1}
+/* referral hero */
+.rh{flex:none;display:flex;align-items:center;gap:12px;border-radius:20px;padding:12px 14px;margin-bottom:10px;color:#fff;background:linear-gradient(120deg,#1e6bff,#0a3fc9 70%,#6a4bf5);position:relative;overflow:hidden;box-shadow:0 10px 22px rgba(20,90,220,.3)}
+.rh:before{content:"";position:absolute;right:-26px;top:-34px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.14)}
+.rh>*{position:relative}
+.rcn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);display:grid;place-items:center;font-size:20px;flex:none}
+.rh .i{flex:1;min-width:0}
+.rh b{font-size:15px;display:block}
+.rh p{font-size:11px;opacity:.9;margin-top:2px;line-height:1.35}
+.rp{background:#fff;color:#0a4fd6;font-weight:800;font-size:15px;padding:7px 12px;border-radius:99px;box-shadow:0 4px 10px rgba(0,0,0,.18);white-space:nowrap}
+#ref h2{margin:0 0 8px;font-size:19px}
+/* live status delete */
+.sct{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.sct .bg{margin-inline-start:auto}
+.del{width:28px;height:28px;border-radius:50%;background:#ffecec;color:#e5484d;display:grid;place-items:center;font-size:13px;flex:none}
+.dic{width:60px;height:60px;border-radius:50%;background:#ffe9e9;color:#e5484d;display:grid;place-items:center;font-size:26px;margin:0 auto}
+.btn.red{background:linear-gradient(180deg,#ff6b6b,#e5484d);box-shadow:0 8px 18px rgba(229,72,77,.3)}
+/* post popup */
+.fc{transition:border-color .2s,box-shadow .2s}
+.fc:focus-within{border-color:#8fc3f5;box-shadow:0 0 0 3px rgba(30,107,255,.12)}
+.fh .ic{box-shadow:0 0 0 3px rgba(30,107,255,.08)}
+.sel .cat-i{position:absolute;right:auto;left:14px;top:50%;transform:translateY(-50%);color:#8aa0cc;font-size:13px}
+.sel .f{padding-left:38px;transition:.2s}
+.sel.channel .f{background:#e1efff;color:#1565f0;font-weight:700;border-color:#9cc8f7}
+.sel.bot .f{background:#ece6ff;color:#6a4bf5;font-weight:700;border-color:#cbbcff}
+.sel.link .f{background:#dcf7ec;color:#0e9f6e;font-weight:700;border-color:#a8e6cc}
+.sel.channel .cat-i{color:#1565f0}.sel.bot .cat-i{color:#6a4bf5}.sel.link .cat-i{color:#0e9f6e}
+.q button{height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15}
+.q button b{font-size:13px}
+.q button small{font-size:9px;opacity:.75;font-weight:500}
+.sum{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(120deg,#eaf3ff,#dcecff);border:1px dashed #9cc8f7;border-radius:16px;padding:9px 12px;margin-bottom:10px;font-size:12.5px;font-weight:600;color:var(--m)}
+.sv{display:flex;align-items:center;gap:6px;color:var(--t);font-size:15px}
+.tin{width:18px;height:18px;display:block}
+.tin svg{width:100%;height:100%;display:block}
+.note.ctr{text-align:center;margin:10px 0 0;font-size:11px}
+/* language popup */
+.lgl{display:flex;flex-direction:column;gap:9px;margin-bottom:10px}
+.lo{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.8);border:1.5px solid #d6e8fb;border-radius:18px;padding:11px 12px;font-size:14px;font-weight:600;color:var(--t);text-align:start;width:100%;transition:.2s}
+.lo .lf{width:34px;height:34px;border-radius:50%;background:var(--bl);color:#1060f0;display:grid;place-items:center;font-size:11px;font-weight:800;flex:none}
+.lo>i{margin-inline-start:auto;color:#c4d6ee;font-size:19px}
+.lo.on{border-color:#1e7bff;background:#fff;box-shadow:0 0 0 3px rgba(30,107,255,.1)}
+.lo.on .lf{background:var(--g);color:#fff}
+.lo.on>i{color:#1e7bff}
+.soon{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--m);font-weight:500;margin:2px 0 12px}
+/* RTL (Arabic) */
+[dir=rtl] .fa-chevron-right,[dir=rtl] .fa-arrow-up-right-from-square{transform:scaleX(-1)}
+[dir=rtl] .dd{left:auto;right:0;transform-origin:top right}
+[dir=rtl] .dd:before{left:auto;right:26px}
+[dir=rtl] .pr{padding-left:0;padding-right:6px}
+[dir=rtl] #car{direction:ltr}
+[dir=rtl] .cc{direction:rtl}
+[dir=rtl] .sel .cat-i{left:auto;right:14px}
+[dir=rtl] .sel .f{padding-left:15px;padding-right:38px}
+[dir=rtl] .sel>i:last-child{right:auto;left:22px}
+[dir=rtl] #wc,[dir=rtl] #wg,[dir=rtl] #bv,[dir=rtl] .rp,[dir=rtl] .rw span,[dir=rtl] .big,[dir=rtl] .sv,[dir=rtl] .bal .b2{direction:ltr;unicode-bidi:isolate}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    
+    <h1 id="ttl"></h1>
+  </header>
+  <main>
+    <section id="home" class="page on">
+      <div class="pr">
+        <div id="hav"></div>
+        <div class="pn"><b id="hn"></b><button class="bal" id="bal" onclick="showBal()"><span class="b1"><i class="fa-solid fa-wallet"></i>Balance</span><span class="b2"><i class="fa-solid fa-database"></i><em id="bv">0</em> C</span></button></div>
+        <div class="ics">
+          <button class="ib" onclick="go('ref')"><i class="fa-solid fa-user-plus"></i></button>
+          <button class="ib" onclick="faq()"><i class="fa-solid fa-circle-question"></i></button>
+          <button class="ib" onclick="sets()"><i class="fa-solid fa-gear"></i></button>
+        </div>
+      </div>
+      <div class="car" id="car"></div>
+      <div class="dots" id="dots"></div>
+      <div class="tb">
+        <button class="pill" onclick="togDD(event)"><i class="fa-solid fa-sliders"></i><span id="fl">All</span><i class="fa-solid fa-chevron-down"></i></button>
+        <div class="dd" id="dd"></div>
+        <button class="pill ad" onclick="postUI()"><i class="fa-solid fa-plus"></i>Add</button>
+      </div>
+      <div class="scroll" id="tl"></div>
+    </section>
+    <section id="ref" class="page"></section>
+    <section id="prof" class="page">
+      <div class="cd pc"><div id="pav"></div><div><b id="pn"></b><span class="un" id="pu"></span><small class="mt" id="pid"></small></div></div>
+      <div class="r2">
+        <button class="cd mc" onclick="go('stat')"><div class="ic"><i class="fa-solid fa-tower-broadcast"></i></div><div><b>Live Status</b><small>Online<span class="dot"></span></small></div><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="cd mc" onclick="go('ref')"><div class="ic"><i class="fa-solid fa-user-group"></i></div><div><b>Referral</b><small id="rk"></small></div><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="cd">
+        <div class="wh"><div class="ic"><i class="fa-solid fa-wallet"></i></div><div class="i"><h3>Wallet</h3><small>Your Balance &amp; Assets</small></div><button class="hb" onclick="hist()"><i class="fa-solid fa-clock-rotate-left"></i><i class="fa-solid fa-chevron-right"></i></button></div>
+        <div class="wr"><div class="ic tn"><svg viewBox="0 0 56 56" fill="none"><path d="M28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z" fill="#0098EA"/><path d="M37.5603 15.6277H18.4386C14.9228 15.6277 12.6944 19.4202 14.4632 22.4861L26.2644 42.9409C27.0345 44.2765 28.9644 44.2765 29.7345 42.9409L41.5381 22.4861C43.3045 19.4251 41.0761 15.6277 37.5627 15.6277H37.5603ZM26.2548 36.8068L23.6847 31.8327L17.4833 20.7414C17.0742 20.0315 17.5795 19.1218 18.4362 19.1218H26.2524V36.8092L26.2548 36.8068ZM38.5108 20.739L32.3118 31.8351L29.7417 36.8068V19.1194H37.5579C38.4146 19.1194 38.9199 20.0291 38.5108 20.739Z" fill="white"/></svg></div><span class="lb">Gram</span><span id="wg"></span></div>
+        <div class="wr"><div class="ic"><i class="fa-solid fa-database"></i></div><span class="lb">Coin</span><span id="wc"></span></div>
+        <div class="r2"><button class="btn" onclick="cvUI()"><i class="fa-solid fa-right-left"></i>Convert</button><button class="btn o" id="wdb" onclick="wd()"><i class="fa-solid fa-wallet"></i>Withdraw</button></div>
+      </div>
+      <div class="cd">
+        <button class="mr" onclick="lb()"><div class="ic"><i class="fa-solid fa-chart-simple"></i></div>Leaderboard<i class="fa-solid fa-chevron-right"></i></button>
+        <button class="mr" onclick="faq()"><div class="ic"><i class="fa-solid fa-circle-question"></i></div>Faq<i class="fa-solid fa-chevron-right"></i></button>
+        <button class="mr" onclick="sets()"><div class="ic"><i class="fa-solid fa-gear"></i></div>Settings<i class="fa-solid fa-chevron-right"></i></button>
+        <button class="mr" onclick="privacy()"><div class="ic"><i class="fa-solid fa-shield-halved"></i></div>Privacy Policy<i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+    <section id="stat" class="page"></section>
+  </main>
+  <nav>
+    <button data-p="home" class="on" onclick="go('home')"><i class="fa-solid fa-house"></i>Home</button>
+    <button data-p="prof" onclick="go('prof')"><i class="fa-solid fa-user"></i>Profile</button>
+  </nav>
+</div>
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div id="ts"></div>
+<div id="splash"><div class="sp-c"><div class="sp-logo"><svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lg-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcfefd"/><stop offset="1" stop-color="#e9edf7"/></linearGradient>
+    <linearGradient id="lg-ring" gradientUnits="userSpaceOnUse" x1="0" y1="8" x2="0" y2="632"><stop offset="0" stop-color="#02edf8"/><stop offset="1" stop-color="#004de9"/></linearGradient>
+    <linearGradient id="lg-cap" gradientUnits="userSpaceOnUse" x1="0" y1="115" x2="0" y2="505"><stop offset="0.000" stop-color="#0fe2f2"/><stop offset="0.077" stop-color="#06e1f6"/><stop offset="0.154" stop-color="#03d8f5"/><stop offset="0.231" stop-color="#03ccf4"/><stop offset="0.308" stop-color="#03c0f4"/><stop offset="0.385" stop-color="#05b3f1"/><stop offset="0.462" stop-color="#02a3f0"/><stop offset="0.538" stop-color="#0295ef"/><stop offset="0.615" stop-color="#0386ee"/><stop offset="0.692" stop-color="#057aed"/><stop offset="0.769" stop-color="#0269eb"/><stop offset="0.846" stop-color="#045deb"/><stop offset="0.923" stop-color="#0553ea"/><stop offset="1.000" stop-color="#0b4fe7"/></linearGradient>
+    <linearGradient id="lg-h1" gradientUnits="userSpaceOnUse" x1="0" y1="119" x2="0" y2="312"><stop offset="0" stop-color="#01c8f5"/><stop offset="1" stop-color="#0647e3"/></linearGradient>
+    <linearGradient id="lg-h2" gradientUnits="userSpaceOnUse" x1="0" y1="312" x2="0" y2="119"><stop offset="0" stop-color="#009de8"/><stop offset="1" stop-color="#0035dc"/></linearGradient>
+    <linearGradient id="lg-b1" gradientUnits="userSpaceOnUse" x1="0" y1="-48.3" x2="0" y2="32.0"><stop offset="0" stop-color="#0646e2"/><stop offset="1" stop-color="#12c8f0"/></linearGradient>
+    <linearGradient id="lg-b2" gradientUnits="userSpaceOnUse" x1="0" y1="48.3" x2="0" y2="-32.0"><stop offset="0" stop-color="#0646e2"/><stop offset="1" stop-color="#12c8f0"/></linearGradient>
+    <clipPath id="lg-cut"><path d="M0 0 H469.8 L0 469.8 Z"/></clipPath>
+    <filter id="lg-sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="2" dy="5" stdDeviation="6" flood-color="#0a3fa0" flood-opacity=".16"/></filter>
+  </defs>
+  <rect width="640" height="640" fill="url(#lg-bg)"/>
+  <circle cx="319.85" cy="320.40" r="295.48" fill="none" stroke="url(#lg-ring)" stroke-width="32.04"/>
+  <g filter="url(#lg-sh)">
+    <circle cx="216.99" cy="224.49" r="76.88" fill="none" stroke="url(#lg-h1)" stroke-width="57.25" clip-path="url(#lg-cut)"/>
+    <circle cx="216.99" cy="224.49" r="76.88" fill="none" stroke="url(#lg-h2)" stroke-width="57.25" clip-path="url(#lg-cut)" transform="rotate(180 319.63 321.09)"/>
+    <g transform="translate(319.63 321.09) rotate(-45)">
+      <rect x="-105.28" y="-50.3" width="57.30" height="82.2" fill="url(#lg-b1)"/>
+      <rect x="47.98" y="-32.0" width="57.30" height="82.2" fill="url(#lg-b2)"/>
+    </g>
+    <path d="M474.03 275.26 A76.77 76.77 0 0 0 365.46 166.69 L165.22 366.92 A76.77 76.77 0 0 0 273.80 475.50 Z" fill="none" stroke="url(#lg-cap)" stroke-width="57.05" stroke-linejoin="round"/>
+  </g>
+</svg></div><div class="sp-t">Act &amp; Gain <svg class="vbd" viewBox="0 0 22 22"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4db4ff"/><stop offset="1" stop-color="#0a62f0"/></linearGradient></defs><path fill="url(#vg)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><path fill="#fff" d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div><p>Complete tasks. Earn rewards.</p><div class="lw"><div class="lrow"><span>Loading</span><b id="lp">0%</b></div><div class="lbar"><i id="lf"></i></div></div></div><div class="sp-v"></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const tg=window.Telegram&&Telegram.WebApp;
+if(tg){try{tg.ready();tg.expand();tg.setHeaderColor('#ffffff')}catch(e){}}
+const U=(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user)||{first_name:'User',id:1};
+const NAME=((U.first_name||'')+' '+(U.last_name||'')).trim()||'User';
+
+/* Config: replace these placeholders */
+const CH='https://t.me/givyforce',SUPPORT='https://t.me/givyforce',BOT='actngain_bot',PAYADDR='UQBEbiDxJ-I0Tklmh7dXMqDqaxcR2J-rH3tl1iHrLec3WzTK';
+const FEE=3,MINC=50,MINW=0.05,VER='1.0.0';
+const CAT={channel:{l:'Channel Task',r:10,i:'fa-paper-plane'},bot:{l:'Bot Task',r:10,i:'fa-robot'},link:{l:'Link Task',r:10,i:'fa-link'}};
+
+/* Data arrays: fill these from your backend. DT item: {id,t,u,c:'channel|bot|link',by,p}. REFS item: {n,d}. TOP item: {n,c}. */
+const REFS=[];
+const TOP=[];
+const DT=[];
+
+let S;try{S=JSON.parse(localStorage.getItem('ag_clean'))}catch(e){}
+S=S||{coins:0,gram:0,done:0,ids:[],joined:false,paid:[],earned:0,
+uid:String(1+Math.floor(Math.random()*9))+Array.from({length:9},()=>Math.floor(Math.random()*10)).join(''),
+mine:[]};
+S.rdy=S.rdy||[];
+(function(){let h=0;for(const ch of String(S.uid))h=(h*31+ch.charCodeAt(0))>>>0;const r=()=>{h=(h+0x6D2B79F5)>>>0;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};for(let i=DT.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[DT[i],DT[j]]=[DT[j],DT[i]]}})();
+const save=()=>{try{localStorage.setItem('ag_clean',JSON.stringify(S))}catch(e){}};
+let TX=[];
+const tx=(t,a)=>{TX.unshift({t,a});TX=TX.slice(0,5)};
+const vr=()=>REFS.filter(r=>r.d>=10).length;
+REFS.forEach((r,i)=>{if(r.d>=10&&!S.paid.includes(i)){S.paid.push(i);S.coins+=10;S.earned+=10;tx('Referral bonus','+10 C')}});save();
+
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const av=(p,c='',n='')=>`<div class="av ${c}">${n?esc((n.trim()[0]||'?').toUpperCase()):'<i class="fa-solid fa-user"></i>'}${p?`<img src="${esc(p)}" onerror="this.remove()">`:''}</div>`;
+const detect=u=>{if(!/t\.me\//i.test(u))return'link';const m=u.match(/t\.me\/([^\/?#]+)/i);return m&&/bot$/i.test(m[1])?'bot':'channel'};
+const norm=u=>{u=u.trim();return/^https?:\/\//i.test(u)?u:'https://'+u};
+const okUrl=u=>{try{return new URL(norm(u)).hostname.includes('.')}catch(e){return false}};
+const openL=u=>{if(tg){/t\.me\//i.test(u)?tg.openTelegramLink(u):tg.openLink(u)}else window.open(u,'_blank')};
+const copy=t=>{(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Copied')).catch(()=>toast('Copy failed'))};
+
+/* Modal + toast */
+const ov=$('#ov'),md=$('#md');
+const opn=(h,f)=>{md.className='md'+(f?' '+f:'');md.innerHTML=h;ov.classList.add('on')};
+const cls=()=>{ov.classList.remove('on');P={q:100,cpn:false,t:'',u:'',g:0}};
+ov.onclick=e=>{if(e.target===ov)cls()};
+const MI={'Post a Task':['folder-plus','Create a new task and promote your project.'],'Pay':['wallet','Send payment to post your task.'],'Coupon':['tag','Enter a valid coupon code.'],'FAQ':['circle-question','Quick answers and support.'],'Settings':['gear','Language, about and channel.'],'Privacy Policy':['shield-halved','How we handle your data.'],'Leaderboard':['chart-simple','All-time top earners.'],'Transactions':['clock-rotate-left','Your last 5 transactions.'],'Convert Coins':['right-left','Turn coins into Gram.'],'Withdraw':['wallet','Cash out your Gram balance.'],'Ecosystem':['globe','One ecosystem. Three powerful bots.'],'Language':['globe','Choose your language.']};
+const mh=t=>{const m=MI[t]||['circle-info',''];return `<div class="mh"><div class="ic"><i class="fa-solid fa-${m[0]}"></i></div><div class="i"><h3>${t}</h3>${m[1]?`<small>${m[1]}</small>`:''}</div><button class="x" onclick="cls()"><i class="fa-solid fa-xmark"></i></button></div>`};
+let tm;const toast=m=>{const e=$('#ts');e.textContent=m;e.classList.add('on');clearTimeout(tm);tm=setTimeout(()=>e.classList.remove('on'),2500)};
+
+/* Navigation */
+const TT='Act &amp; Gain <svg class="vbd" viewBox="0 0 22 22"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4db4ff"/><stop offset="1" stop-color="#0a62f0"/></linearGradient></defs><path fill="url(#vg)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><path fill="#fff" d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg>';
+let cur='home',from='home';
+function go(p){
+  const sub=p==='ref'||p==='stat';
+  if(sub)from=cur;else cur=p;
+  document.querySelectorAll('.page').forEach(e=>e.classList.toggle('on',e.id===p));
+  $('#ttl').innerHTML=TT;
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===(sub?from:p)));
+  render();
+}
+
+/* Balance reveal */
+let bt;
+function showBal(){const b=$('#bal');b.classList.add('on');clearTimeout(bt);bt=setTimeout(()=>b.classList.remove('on'),2500)}
+
+/* Carousel (always moves forward, no rewind) */
+const CS=[
+{c:'c1',i:'fa-bullhorn',t:'Join Official Channel',s:'Join @givyforce for news and updates. Required for withdrawals.',b:'Join Now',a:()=>{openL(CH);setTimeout(()=>{S.joined=true;save();render()},4000)}},
+{c:'c2',i:'fa-trophy',t:'View Top Earners',s:'See who leads the community and set your own goal to climb higher.',b:'View',a:()=>lb()},
+{c:'c3',i:'fa-globe',t:'Visit The Ecosystem',s:'Explore the whole Ecosystem and discover new scope and opportunity.',b:'Visit',a:()=>eco()}];
+let ci=0,pv=[],ctm;
+$('#car').innerHTML=CS.map((c,k)=>`<div class="cc ${c.c}"><i class="fa-solid ${c.i} wm"></i><div class="ci"><i class="fa-solid ${c.i}"></i></div><div class="ct"><b>${c.t}</b><p>${c.s}</p><button onclick="CS[${k}].a()">${c.b}</button></div></div>`).join('');
+$('#dots').innerHTML=CS.map(()=>'<i></i>').join('');
+function cr(){
+  const n=CS.length;
+  document.querySelectorAll('.cc').forEach((e,k)=>{
+    const o=((k-ci)%n+n)%n,x=o===n-1?-100:o*100;
+    e.style.transition=(pv[k]!==undefined&&Math.abs(x-pv[k])>100)?'none':'';
+    e.style.transform=`translateX(${x}%)`;pv[k]=x;
+  });
+  document.querySelectorAll('#dots i').forEach((d,k)=>d.classList.toggle('on',k===ci%n));
+}
+function cgo(d){ci=(ci+d+CS.length)%CS.length;cr();clearInterval(ctm);ctm=setInterval(()=>cgo(1),4500)}
+let sx=0;const car=$('#car');
+car.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+car.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(d<-40)cgo(1);else if(d>40)cgo(-1)});
+
+/* Task list */
+let F='all';
+const FL={all:'All',channel:'Channel',bot:'Bot',link:'Link'};
+const FI={all:'layer-group',channel:'paper-plane',bot:'robot',link:'link'};
+$('#dd').innerHTML=Object.keys(FL).map(k=>`<button data-k="${k}" onclick="setF('${k}')"><span class="di"><i class="fa-solid fa-${FI[k]}"></i></span>${FL[k]}<i class="fa-solid fa-check ck"></i></button>`).join('');
+function togDD(e){e.stopPropagation();$('#dd').classList.toggle('on')}
+document.addEventListener('click',()=>$('#dd').classList.remove('on'));
+function setF(k){F=k;SHOWN=6;$('#fl').textContent=FL[k];$('#dd').classList.remove('on');rt()}
+const allT=()=>DT.filter(t=>!S.ids.includes(t.id)); /* own tasks are never shown in the feed; the server should also exclude them */
+const EMP=(h,p,b)=>`<div class="emp"><div class="eo"><div class="ei"><i class="fa-solid fa-clipboard-list"></i></div></div><h4>${h}</h4><p>${p}</p>${b?'<button class="btn" onclick="postUI()"><i class="fa-solid fa-plus"></i>Post a Task</button>':''}</div>`;
+let SHOWN=6,MORE=false,loadingMore=false;
+function rt0(){
+  $('.pill.ad').style.display=allT().length?'':'none';
+  document.querySelectorAll('#dd button').forEach(b=>b.classList.toggle('on',b.dataset.k===F));
+  const l=allT().filter(t=>F==='all'||t.c===F);MORE=l.length>SHOWN;
+  $('#tl').classList.toggle('e',!l.length);
+  $('#tl').innerHTML=l.length?l.slice(0,SHOWN).map(t=>{
+    const c=CAT[t.c],rd=S.rdy.includes(t.id);
+    return `<div class="tk">${av(t.p,'',t.by)}<div class="i"><b>${esc(t.t)}</b><span class="ch ${t.c}"><i class="fa-solid ${c.i}"></i>${c.l}</span></div><button class="rw ${rd?'rd':''}" onclick="doTask('${t.id}')"><span><i class="fa-solid ${rd?'fa-gift':'fa-database'}"></i>${rd?'Claim':'+'+c.r+' C'}</span><i class="fa-solid fa-chevron-right"></i></button></div>`;
+  }).join(''):EMP('No tasks available',F==='all'?'You are all caught up. New tasks will appear here soon.':'No '+FL[F].toLowerCase()+' tasks right now. Try another filter or check back soon.',!allT().length);
+}
+function rt(){rt0();setTimeout(fill,60)}
+function more(){
+  if(!MORE||loadingMore)return;loadingMore=true;
+  const t=$('#tl'),d=document.createElement('div');d.className='ldm';d.innerHTML='<span class="dt3"><i></i><i></i><i></i></span>Loading more tasks...';
+  t.appendChild(d);t.scrollTo({top:t.scrollHeight,behavior:'smooth'});
+  setTimeout(()=>{loadingMore=false;SHOWN+=5;const st=t.scrollTop;rt0();t.scrollTop=st},2000);
+}
+function fill(){const t=$('#tl');if(MORE&&!loadingMore&&t.scrollHeight<=t.clientHeight+4)more()}
+$('#tl').addEventListener('scroll',()=>{const t=$('#tl');if(t.scrollTop+t.clientHeight>=t.scrollHeight-6)more()});
+const away=new Set();
+function mk(id){if(!away.has(id))return;away.delete(id);if(!S.rdy.includes(id))S.rdy.push(id);save();rt()}
+function back(){[...away].forEach(mk)}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)back()});
+window.addEventListener('focus',back);
+function doTask(id){
+  const t=allT().find(x=>x.id===id);if(!t)return;
+  if(t.own)return toast('You cannot complete your own task');
+  if(S.rdy.includes(id))return claim(t);
+  openL(t.u);away.add(id);setTimeout(()=>mk(id),9000);
+}
+function claim(t){
+  const r=CAT[t.c].r;
+  S.coins+=r;S.earned+=r;S.done++;S.ids.push(t.id);S.rdy=S.rdy.filter(x=>x!==t.id);
+  const m=S.mine.find(x=>x.id===t.id);if(m)m.n++; /* poster progress: the server should add 1 per valid claim */
+  if(t.u===CH)S.joined=true;
+  tx('Task reward','+'+r+' C');save();render();toast('+'+r+' C added to your balance');
+}
+
+/* Post a task */
+let P={q:100,cpn:false,t:'',u:'',g:0};
+function postUI(){
+  const fc=(i,t,b)=>`<div class="fc"><div class="fh"><div class="ic"><i class="fa-solid fa-${i}"></i></div>${t}</div>${b}</div>`;
+  opn(`${mh('Post a Task')}${fc('pen','Title',`<input class="f" id="pt" maxlength="40" placeholder="Enter a task title..." value="${esc(P.t)}" oninput="pUp()">`)}${fc('link','Task URL',`<input class="f" id="pu2" placeholder="Paste the URL here..." value="${esc(P.u)}" oninput="pUp()">`)}${fc('table-cells-large','Category',`<div class="sel"><i class="fa-solid fa-table-cells-large cat-i"></i><input class="f ro" id="pc" readonly tabindex="-1" placeholder="Select category"><i class="fa-solid fa-chevron-down"></i></div>`)}${fc('database','Quantity',`<div class="q">${[100,200,500,1000].map(n=>`<button data-q="${n}" onclick="P.q=${n};pUp()"><b>${n}</b><small>actions</small></button>`).join('')}</div>`)}<div class="sum"><span>Total cost</span><span class="sv"><span class="tin">${document.querySelector('.tn svg').outerHTML}</span><b id="sc"></b></span></div><div class="r2" style="margin:0"><button class="btn" id="pb2" onclick="payUI()"></button><button class="btn o" onclick="cpUI()"><i class="fa-solid fa-tag"></i>Use Coupon</button></div><p class="note ctr">Your task will be shown to all users after payment.</p>`);
+  pUp();
+}
+function pUp(){
+  P.t=$('#pt').value;P.u=$('#pu2').value;
+  const c=P.u.trim()?detect(P.u):'',ok=P.t.trim()&&okUrl(P.u);
+  $('#pc').value=c?T(CAT[c].l):'';
+  $('.sel').className='sel '+c;$('.cat-i').className='fa-solid cat-i '+(c?CAT[c].i:'fa-table-cells-large');
+  document.querySelectorAll('.q button').forEach(b=>b.classList.toggle('on',+b.dataset.q===P.q));
+  P.g={100:0.5,200:0.9,500:2.1,1000:4}[P.q];
+  $('#sc').textContent=P.cpn?'Free':P.g+' Gram';
+  $('#pb2').innerHTML='<i class="fa-solid fa-database"></i>'+(P.cpn?'Post for free':`Pay ${P.g} Gram`);
+  $('#pb2').disabled=!ok;
+}
+function payUI(){
+  if(P.cpn)return addTask();
+  opn(`${mh('Pay')}<p class="note">Send exactly ${P.g} Gram to the address below, then tap Check.</p><div class="lk"><input class="f" readonly value="${PAYADDR}"><button class="btn" onclick="copy('${PAYADDR}')"><i class="fa-regular fa-copy"></i></button></div><button class="btn" onclick="addTask()"><i class="fa-solid fa-circle-check"></i> Check</button>`);
+}
+function addTask(){
+  const c=detect(P.u);
+  S.mine.unshift({id:'m'+Date.now(),t:P.t.trim(),u:norm(P.u),c,q:P.q,n:0});
+  P={q:100,cpn:false,t:'',u:'',g:0};save();cls();render();toast('Task added');
+}
+const MC=()=>[84,79,70,79,85,78,94,70,85,54].map(c=>String.fromCharCode(c^7)).join('');
+function cpUI(){
+  opn(`${mh('Coupon')}<label>Coupon code</label><input class="f" id="cpv" autocomplete="off" placeholder="Enter coupon code"><button class="btn" onclick="cpOk()">Confirm</button>`);
+}
+function cpOk(){
+  if($('#cpv').value.trim().toUpperCase()===MC()){P.cpn=true;toast('Coupon applied');postUI()}
+  else toast('Invalid coupon');
+}
+
+/* Status page */
+function rs(){
+  const M=S.mine,act=M.filter(t=>t.n<t.q).length,joins=M.reduce((a,t)=>a+t.n,0);
+  $('#stat').innerHTML=`<div class="hero"><span class="lv"><i></i>LIVE</span><h2>Your Task Status</h2><p>Track the progress of every task you posted.</p><div class="hs"><div><b>${M.length}</b><small>Posted</small></div><div><b>${act}</b><small>Active</small></div><div><b>${joins}</b><small>Actions done</small></div></div></div><div class="scroll ${M.length?'':'e'}">${M.length?M.map(t=>{
+    const c=CAT[t.c],p=Math.min(100,Math.round(t.n/t.q*100)),d=t.n>=t.q;
+    return `<div class="cd"><div class="sct"><span class="ch ${t.c}"><i class="fa-solid ${c.i}"></i>${c.l}</span><span class="bg ${d?'ok':'act'}">${d?'<i class="fa-solid fa-check"></i> Completed':'Active'}</span><button class="del" onclick="delUI('${t.id}')"><i class="fa-solid fa-trash-can"></i></button></div><div class="row"><div class="i"><b style="margin:0 0 8px;font-size:14px">${esc(t.t)}</b><div class="pb"><i style="width:${p}%"></i></div><div class="pm"><span>${t.n} / ${t.q} completed</span><span>${t.q-t.n} left</span></div></div><div class="ring" style="--p:${p}"><span>${p}%</span></div></div></div>`;
+  }).join(''):EMP('No tasks posted yet','Post your first task to start growing your channel, bot or link.',1)}</div>`;
+}
+function delUI(id){
+  opn(`<div style="text-align:center;padding:6px 0 2px"><div class="dic"><i class="fa-solid fa-trash-can"></i></div><h3 style="margin:12px 0 6px">Delete this task?</h3><p class="note">This task will be removed from the feed of all users. This cannot be undone.</p><div class="r2" style="margin:0"><button class="btn o" onclick="cls()">Cancel</button><button class="btn red" onclick="delGo('${id}')"><i class="fa-solid fa-trash-can"></i>Delete</button></div></div>`);
+}
+function delGo(id){
+  S.mine=S.mine.filter(t=>t.id!==id);const i=DT.findIndex(t=>t.id===id);if(i>=0)DT.splice(i,1);save();cls();render();toast('Task deleted');
+}
+
+/* Referral page */
+function rr(){
+  const v=vr(),link=`https://t.me/${BOT}?start=${S.uid}`;
+  $('#ref').innerHTML=`<h2>Referrals</h2>
+  <div class="rh"><div class="rcn"><i class="fa-solid fa-gift"></i></div><div class="i"><b>10 Coins Per Referral</b><p>Invite your friends and watch your balance grow.</p></div><span class="rp">+10 C</span></div>
+  <div class="cd"><small class="mt">Your referral link</small><div class="lk"><input class="f" readonly value="${link}"><button class="btn" onclick="copy('${link}')"><i class="fa-regular fa-copy"></i></button></div><button class="btn o" onclick="shr('${link}')"><i class="fa-solid fa-share-nodes"></i> Share link</button></div>
+  <div class="st"><div><b>${REFS.length}</b><small>Referred</small></div><div><b>${v}</b><small>Valid</small></div><div><b>${v*10}</b><small>Coins earned</small></div></div>
+  <p class="note" style="margin-top:0">A referral becomes valid after completing 10 tasks. You earn 10 coins for each valid referral, added automatically.</p>
+  <div class="scroll ${REFS.length?'':'e'}">${!REFS.length?'<div class="emp"><div class="eo"><div class="ei"><i class="fa-solid fa-user-plus"></i></div></div><h4>No referrals yet</h4><p>Share your referral link to invite friends and earn 10 coins for each valid referral.</p></div>':REFS.map(r=>{const ok=r.d>=10;return `<div class="cd"><div class="row">${av('','',r.n)}<div class="i"><b>${esc(r.n)}</b><div class="pb"><i style="width:${Math.min(100,r.d/10*100)}%"></i></div><small class="mt">${Math.min(r.d,10)}/10 tasks</small></div><div style="text-align:end"><span class="bg ${ok?'ok':''}">${ok?'Valid':'Pending'}</span><div style="font-weight:800;margin-top:6px">${ok?'+10':'0'} C</div></div></div></div>`}).join('')}</div>`;
+}
+function shr(l){const u='https://t.me/share/url?url='+encodeURIComponent(l)+'&text='+encodeURIComponent('Join Act & Gain and earn coins by completing tasks.');tg?tg.openTelegramLink(u):window.open(u,'_blank')}
+
+/* Popups: FAQ, settings, leaderboard, history */
+function faq(){
+  const Q=[['How do I earn coins?','Complete tasks on the home page. Every task gives 10 coins. Open the task, come back and tap Claim.'],['How do I get Gram?','Convert coins to Gram in your wallet. 1000 coins equal 1 Gram. The convert fee is 3 coins.'],['How do I withdraw?','Complete 20 tasks, have 3 valid referrals and join the official channel. Minimum withdrawal is 0.05 Gram.'],['What is a valid referral?','A friend who joined with your link and completed at least 10 tasks. You earn 10 coins once.'],['How long do withdrawals take?','Withdrawals are completed within 3 hours.'],['How do I promote my own task?','Tap Add on the home page, enter a title and link, choose a quantity and pay in Gram.']];
+  opn(`${mh('FAQ')}<div class="sc">${Q.map((q,i)=>`<details class="ac"><summary><span class="n">${i+1}</span>${q[0]}<i class="fa-solid fa-chevron-down chv"></i></summary><p>${q[1]}</p></details>`).join('')}</div><div class="ft"><a class="btn" href="${SUPPORT}" target="_blank"><i class="fa-solid fa-headset"></i>Contact support</a></div>`,'fix');
+}
+function sets(){
+  opn(`${mh('Settings')}<div class="sc"><div class="sh">Preferences</div><button class="sr" onclick="langUI()"><div class="ic"><i class="fa-solid fa-globe"></i></div>Language<small>${LN[LANG]}</small><i class="fa-solid fa-chevron-right"></i></button><div class="sh">About</div><details class="ac"><summary><div class="ic"><i class="fa-solid fa-circle-info"></i></div>About Us<i class="fa-solid fa-chevron-down chv"></i></summary><p>Act &amp; Gain is a task-to-earn platform inside Telegram. Complete simple tasks, grow your balance and promote your own channel, bot or link.</p></details><a class="sr" href="${CH}" target="_blank"><div class="ic"><i class="fa-solid fa-bullhorn"></i></div>Official Channel<small>@givyforce</small><i class="fa-solid fa-arrow-up-right-from-square"></i></a><button class="sr" onclick="privacy()"><div class="ic"><i class="fa-solid fa-shield-halved"></i></div>Privacy Policy<i class="fa-solid fa-chevron-right"></i></button></div><div class="ver">Act &amp; Gain &middot; Version ${VER}</div>`,'fix s');
+}
+function privacy(){
+  opn(`${mh('Privacy Policy')}<p class="note">We only use your public Telegram profile details to run the app. We never ask for your password or private messages. Posting fake or abusive tasks may lead to a ban.</p>`);
+}
+const rankOf=()=>{if(!TOP.length)return'--';const m=TOP[TOP.length-1].c;return S.earned>=m?TOP.filter(u=>u.c>S.earned).length+1:TOP.length+1};
+function eco(){
+  const B=[['Act &amp; Gain','actngain_bot','list-check','Task to earn. Complete simple tasks, promote your own channel, bot or link and collect rewards.','Task to Earn','a'],['Level Ore','levelore_bot','gem','The mining bot where LOR token is mined. Keep mining and keep growing.','Mining &middot; LOR','o'],['Givy Force','givyforce_bot','gift','The core bot of the ecosystem. It runs giveaways and lotteries for the whole community.','Core &middot; Giveaway &amp; Lottery','g']];
+  opn(`${mh('Ecosystem')}<div class="sc"><div class="ei2"><b>One ecosystem, three bots</b><p>Earn rewards, mine tokens and win prizes. Every bot is connected, so your activity keeps growing across the whole ecosystem.</p></div>${B.map(b=>`<button class="eb" onclick="openL('https://t.me/${b[1]}')"><div class="ebi ${b[5]}"><i class="fa-solid fa-${b[2]}"></i></div><div class="i"><b>${b[0]}</b><small class="hd">@${b[1]}</small><p>${b[3]}</p><span class="ch channel">${b[4]}</span></div><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`,'fix');
+}
+function lb(){
+  /* rank should come from the server */
+  const rank=rankOf();
+  const ic=['#f5b301','#9aa5b8','#cd7f32'];
+  opn(`${mh('Leaderboard')}<small class="mt">All-time top earners</small><div style="margin-top:8px">${!TOP.length?'<div class="em">No rankings yet.</div>':TOP.map((u,i)=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--l)"><div class="rk" ${i<3?`style="background:${ic[i]};color:#fff"`:''}>${i<3?'<i class="fa-solid fa-crown"></i>':i+1}</div><div class="i"><b>${u.n}</b></div><b style="color:var(--bd)">${u.c.toLocaleString()} C</b></div>`).join('')}</div><div class="cd" style="margin:14px 0 0;background:var(--bl)"><div class="row"><div class="i"><small class="mt">Your position</small><b>#${rank}</b></div><b style="color:var(--bd)">${S.earned.toLocaleString()} C</b></div></div>`);
+}
+function hist(){
+  opn(`${mh('Transactions')}${TX.length?TX.map(t=>`<div class="row" style="padding:11px 0;border-bottom:1px solid var(--l)"><div class="rk"><i class="fa-solid ${t.a[0]==='+'?'fa-arrow-down':'fa-arrow-up'}"></i></div><div class="i"><b>${t.t}</b></div><b style="color:${t.a[0]==='+'?'var(--ok)':'var(--er)'}">${t.a}</b></div>`).join(''):'<div class="em">No transactions yet.</div>'}`);
+}
+
+/* Convert */
+function cvUI(){
+  opn(`${mh('Convert Coins')}<label>Coins to convert</label><input class="f" id="cv" type="number" inputmode="numeric" placeholder="Minimum ${MINC}" oninput="cvUp()"><div class="mx"><span>Balance: ${S.coins} C</span><button onclick="$('#cv').value=S.coins;cvUp()">Max</button></div><small class="mt">You will receive</small><div class="big" id="cr">0.000 Gram</div><p class="note">Convert fee: ${FEE} coins. Rate: 1000 coins = 1 Gram.</p><button class="btn" onclick="cvGo()">Proceed</button>`);
+}
+function cvUp(){const v=Math.floor(+$('#cv').value||0);$('#cr').textContent=(Math.max(0,v-FEE)/1000).toFixed(3)+' Gram'}
+function cvGo(){
+  const v=Math.floor(+$('#cv').value||0);
+  if(v<MINC)return toast('Minimum convert is '+MINC+' coins');
+  if(v>S.coins)return toast('Not enough coins');
+  const g=(v-FEE)/1000;
+  S.coins-=v;S.gram=+(S.gram+g).toFixed(3);tx('Convert to Gram','-'+v+' C');save();cls();render();toast(g.toFixed(3)+' Gram added');
+}
+
+/* Withdraw */
+const wdOk=()=>S.done>=20&&vr()>=3&&S.joined;
+function wd(){
+  if(!wdOk()){
+    const L=[[`Complete at least 20 tasks (${S.done}/20)`,S.done>=20],[`Have 3 valid referrals (${vr()}/3)`,vr()>=3],['Join the official channel',S.joined]];
+    return opn(`${mh('Withdraw')}<p class="note">Complete all requirements to unlock withdrawals.</p>${L.map(([t,o])=>`<div class="ck ${o?'ok':''}"><i class="fa-${o?'solid fa-square-check':'regular fa-square'}"></i><span>${t}</span></div>`).join('')}`);
+  }
+  if(S.gram<MINW)return toast('Minimum withdrawal is '+MINW+' Gram');
+  opn(`${mh('Withdraw')}<label>Gram address</label><input class="f" id="wa" placeholder="Enter your Gram address"><label>Memo (if any)</label><input class="f" id="wm" placeholder="Optional"><label>Amount (Gram)</label><input class="f" id="wam" type="number" step="0.001" inputmode="decimal" placeholder="Minimum ${MINW}"><p class="note">Available: ${S.gram.toFixed(3)} Gram. No withdrawal fee.</p><button class="btn" onclick="wdGo()">Withdraw</button>`);
+}
+function wdGo(){
+  const a=$('#wa').value.trim(),n=+$('#wam').value;
+  if(a.length<10)return toast('Enter a valid Gram address');
+  if(!(n>=MINW))return toast('Minimum withdrawal is '+MINW+' Gram');
+  if(n>S.gram)return toast('Not enough Gram balance');
+  S.gram=+(S.gram-n).toFixed(3);tx('Withdraw','-'+n+' G');save();render();
+  opn(`<div style="text-align:center;padding:10px 0"><i class="fa-solid fa-circle-check" style="font-size:42px;color:var(--ok)"></i><h3 style="margin:12px 0 6px">Successful</h3><p class="note">Your withdrawal will be completed within 3 hours at most.</p><button class="btn" onclick="cls()">Done</button></div>`);
+}
+
+/* Render */
+function render(){
+  $('#hav').innerHTML=av(U.photo_url,'',NAME);$('#hn').textContent=NAME;
+  $('#pav').innerHTML=av(U.photo_url,'sq',NAME);$('#pn').textContent=NAME;
+  $('#pu').style.display=U.username?'inline-block':'none';$('#pu').textContent='@'+(U.username||'');$('#pid').textContent='id: '+S.uid;$('#rk').textContent=vr()+' Valid';
+  $('#wc').textContent=S.coins+' C';$('#bv').textContent=S.coins;$('#wg').textContent=S.gram.toFixed(3);
+  $('#wdb').classList.toggle('dis',!wdOk());
+  rt();rs();rr();
+}
+/* ---- Language system (English default, Russian, Arabic) ---- */
+const LN={en:'English',ru:'Русский',ar:'العربية'};
+let LANG='en';try{LANG=localStorage.getItem('ag_lang')||'en'}catch(e){}
+if(!LN[LANG])LANG='en';
+let PL=LANG;
+const D={
+'Home':['Главная','الرئيسية'],'Profile':['Профиль','الملف الشخصي'],'Balance':['Баланс','الرصيد'],'All':['Все','الكل'],'Add':['Добавить','إضافة'],
+'Channel':['Канал','قناة'],'Bot':['Бот','بوت'],'Link':['Ссылка','رابط'],
+'Channel Task':['Задание: канал','مهمة قناة'],'Bot Task':['Задание: бот','مهمة بوت'],'Link Task':['Задание: ссылка','مهمة رابط'],
+'Claim':['Забрать','استلام'],'Live Status':['Статус','الحالة المباشرة'],'Online':['Онлайн','متصل'],'Referral':['Рефералы','الإحالات'],
+'Wallet':['Кошелёк','المحفظة'],'Your Balance & Assets':['Ваш баланс и активы','رصيدك وأصولك'],'Coin':['Монеты','العملات'],
+'Convert':['Обмен','تحويل'],'Withdraw':['Вывод','سحب'],'Faq':['Вопросы','الأسئلة'],'FAQ':['Вопросы и ответы','الأسئلة الشائعة'],
+'Settings':['Настройки','الإعدادات'],'Privacy Policy':['Политика конфиденциальности','سياسة الخصوصية'],'Leaderboard':['Рейтинг','لوحة المتصدرين'],
+'Loading':['Загрузка','جارٍ التحميل'],'Complete tasks. Earn rewards.':['Выполняйте задания. Получайте награды.','أنجز المهام. اكسب المكافآت.'],
+'Join Official Channel':['Вступить в официальный канал','انضم إلى القناة الرسمية'],
+'Join @givyforce for news and updates. Required for withdrawals.':['Подпишитесь на @givyforce, чтобы следить за новостями. Нужно для вывода.','انضم إلى @givyforce لمتابعة الأخبار والتحديثات. مطلوب للسحب.'],
+'Join Now':['Вступить','انضم الآن'],'View Top Earners':['Лучшие по заработку','عرض أعلى الرابحين'],
+'See who leads the community and set your own goal to climb higher.':['Узнайте, кто лидирует в сообществе, и поставьте цель подняться выше.','تعرّف على المتصدرين في المجتمع وضع هدفك للارتقاء أعلى.'],
+'View':['Смотреть','عرض'],'Visit The Ecosystem':['Посетить экосистему','زيارة المنظومة'],
+'Explore the whole Ecosystem and discover new scope and opportunity.':['Изучите всю экосистему и откройте новые возможности.','استكشف المنظومة بالكامل واكتشف آفاقاً وفرصاً جديدة.'],
+'Visit':['Перейти','زيارة'],
+'No tasks available':['Нет доступных заданий','لا توجد مهام متاحة'],
+'You are all caught up. New tasks will appear here soon.':['Вы всё выполнили. Новые задания скоро появятся здесь.','لقد أنهيت كل شيء. ستظهر المهام الجديدة هنا قريباً.'],
+'No channel tasks right now. Try another filter or check back soon.':['Сейчас нет заданий для каналов. Выберите другой фильтр или загляните позже.','لا توجد مهام قنوات حالياً. جرّب فلتراً آخر أو عد لاحقاً.'],
+'No bot tasks right now. Try another filter or check back soon.':['Сейчас нет заданий для ботов. Выберите другой фильтр или загляните позже.','لا توجد مهام بوتات حالياً. جرّب فلتراً آخر أو عد لاحقاً.'],
+'No link tasks right now. Try another filter or check back soon.':['Сейчас нет заданий по ссылкам. Выберите другой фильтр или загляните позже.','لا توجد مهام روابط حالياً. جرّب فلتراً آخر أو عد لاحقاً.'],
+'Post a Task':['Создать задание','نشر مهمة'],'Loading more tasks...':['Загрузка заданий...','جارٍ تحميل المزيد من المهام...'],
+'Copied':['Скопировано','تم النسخ'],'Copy failed':['Не удалось скопировать','فشل النسخ'],'Task added':['Задание добавлено','تمت إضافة المهمة'],
+'Invalid coupon':['Неверный купон','قسيمة غير صالحة'],'Coupon applied':['Купон применён','تم تطبيق القسيمة'],'Not enough coins':['Недостаточно монет','لا تملك عملات كافية'],
+'Enter a valid Gram address':['Введите корректный адрес Gram','أدخل عنوان Gram صحيحاً'],'Not enough Gram balance':['Недостаточно Gram на балансе','رصيد Gram غير كافٍ'],'Task deleted':['Задание удалено','تم حذف المهمة'],
+'Create a new task and promote your project.':['Создайте задание и продвигайте свой проект.','أنشئ مهمة جديدة وروّج لمشروعك.'],
+'Title':['Название','العنوان'],'Enter a task title...':['Введите название задания...','أدخل عنوان المهمة...'],'Task URL':['Ссылка задания','رابط المهمة'],'Paste the URL here...':['Вставьте ссылку сюда...','الصق الرابط هنا...'],
+'Category':['Категория','الفئة'],'Select category':['Категория определится сама','تُحدَّد الفئة تلقائياً'],'Quantity':['Количество','الكمية'],'actions':['действий','إجراء'],
+'Total cost':['Итого','التكلفة الإجمالية'],'Free':['Бесплатно','مجاناً'],'Use Coupon':['Купон','استخدام قسيمة'],'Post for free':['Опубликовать бесплатно','انشر مجاناً'],
+'Your task will be shown to all users after payment.':['Задание увидят все пользователи после оплаты.','ستظهر مهمتك لجميع المستخدمين بعد الدفع.'],
+'Pay':['Оплата','الدفع'],'Send payment to post your task.':['Отправьте оплату, чтобы опубликовать задание.','أرسل الدفع لنشر مهمتك.'],'Check':['Проверить','تحقق'],
+'Coupon':['Купон','قسيمة'],'Enter a valid coupon code.':['Введите действующий код купона.','أدخل رمز قسيمة صالحاً.'],'Coupon code':['Код купона','رمز القسيمة'],'Enter coupon code':['Введите код купона','أدخل رمز القسيمة'],'Confirm':['Подтвердить','تأكيد'],
+'Quick answers and support.':['Быстрые ответы и поддержка.','إجابات سريعة ودعم.'],'Contact support':['Связаться с поддержкой','تواصل مع الدعم'],
+'How do I earn coins?':['Как заработать монеты?','كيف أكسب العملات؟'],
+'Complete tasks on the home page. Every task gives 10 coins. Open the task, come back and tap Claim.':['Выполняйте задания на главной странице. За каждое задание — 10 монет. Откройте задание, вернитесь и нажмите «Забрать».','أنجز المهام في الصفحة الرئيسية. كل مهمة تمنحك 10 عملات. افتح المهمة ثم عد واضغط استلام.'],
+'How do I get Gram?':['Как получить Gram?','كيف أحصل على Gram؟'],
+'Convert coins to Gram in your wallet. 1000 coins equal 1 Gram. The convert fee is 3 coins.':['Обменяйте монеты на Gram в кошельке. 1000 монет равны 1 Gram. Комиссия за обмен — 3 монеты.','حوّل العملات إلى Gram من محفظتك. كل 1000 عملة تساوي 1 Gram. رسوم التحويل 3 عملات.'],
+'How do I withdraw?':['Как вывести средства?','كيف أسحب؟'],
+'Complete 20 tasks, have 3 valid referrals and join the official channel. Minimum withdrawal is 0.05 Gram.':['Выполните 20 заданий, пригласите 3 валидных реферала и вступите в официальный канал. Минимальный вывод — 0.05 Gram.','أنجز 20 مهمة، وامتلك 3 إحالات صالحة، وانضم إلى القناة الرسمية. الحد الأدنى للسحب 0.05 Gram.'],
+'What is a valid referral?':['Что такое валидный реферал?','ما هي الإحالة الصالحة؟'],
+'A friend who joined with your link and completed at least 10 tasks. You earn 10 coins once.':['Друг, который пришёл по вашей ссылке и выполнил минимум 10 заданий. Вы получаете 10 монет один раз.','صديق انضم عبر رابطك وأكمل 10 مهام على الأقل. تحصل على 10 عملات مرة واحدة.'],
+'How long do withdrawals take?':['Сколько занимает вывод?','كم يستغرق السحب؟'],'Withdrawals are completed within 3 hours.':['Вывод выполняется в течение 3 часов.','يتم إكمال السحب خلال 3 ساعات.'],
+'How do I promote my own task?':['Как продвинуть своё задание?','كيف أروّج لمهمتي؟'],
+'Tap Add on the home page, enter a title and link, choose a quantity and pay in Gram.':['Нажмите «Добавить» на главной, введите название и ссылку, выберите количество и оплатите в Gram.','اضغط إضافة في الصفحة الرئيسية، أدخل العنوان والرابط، اختر الكمية وادفع بـ Gram.'],
+'Language, about and channel.':['Язык, о приложении и канал.','اللغة وحول التطبيق والقناة.'],'Preferences':['Предпочтения','التفضيلات'],'Language':['Язык','اللغة'],'About':['О приложении','حول'],'About Us':['О нас','من نحن'],
+'Act & Gain is a task-to-earn platform inside Telegram. Complete simple tasks, grow your balance and promote your own channel, bot or link.':['Act & Gain — платформа заданий с заработком внутри Telegram. Выполняйте простые задания, увеличивайте баланс и продвигайте свой канал, бот или ссылку.','Act & Gain منصة لكسب المكافآت عبر المهام داخل تيليجرام. أنجز مهام بسيطة، نمِّ رصيدك وروّج لقناتك أو بوتك أو رابطك.'],
+'Official Channel':['Официальный канал','القناة الرسمية'],'How we handle your data.':['Как мы обращаемся с вашими данными.','كيف نتعامل مع بياناتك.'],
+'We only use your public Telegram profile details to run the app. We never ask for your password or private messages. Posting fake or abusive tasks may lead to a ban.':['Мы используем только публичные данные вашего профиля Telegram для работы приложения. Мы никогда не запрашиваем пароль или личные сообщения. Поддельные или оскорбительные задания могут привести к блокировке.','نستخدم فقط بيانات ملفك العام في تيليجرام لتشغيل التطبيق. لا نطلب كلمة المرور أو رسائلك الخاصة أبداً. نشر مهام مزيفة أو مسيئة قد يؤدي إلى الحظر.'],
+'Choose your language.':['Выберите язык.','اختر لغتك.'],'More coming soon':['Скоро появятся другие','المزيد قريباً'],'Save':['Сохранить','حفظ'],
+'All-time top earners':['Лучшие за всё время','أعلى الرابحين على الإطلاق'],'All-time top earners.':['Лучшие за всё время.','أعلى الرابحين على الإطلاق.'],'No rankings yet.':['Рейтинг пока пуст.','لا يوجد ترتيب بعد.'],'Your position':['Ваша позиция','ترتيبك'],
+'Transactions':['Транзакции','المعاملات'],'Your last 5 transactions.':['Ваши последние 5 транзакций.','آخر 5 معاملات لك.'],'No transactions yet.':['Транзакций пока нет.','لا توجد معاملات بعد.'],
+'Task reward':['Награда за задание','مكافأة مهمة'],'Referral bonus':['Бонус за реферала','مكافأة إحالة'],'Convert to Gram':['Обмен на Gram','تحويل إلى Gram'],
+'Convert Coins':['Обмен монет','تحويل العملات'],'Turn coins into Gram.':['Превратите монеты в Gram.','حوّل عملاتك إلى Gram.'],'Coins to convert':['Монет для обмена','العملات المراد تحويلها'],'Max':['Макс','الأقصى'],
+'You will receive':['Вы получите','ستستلم'],'Convert fee: 3 coins. Rate: 1000 coins = 1 Gram.':['Комиссия: 3 монеты. Курс: 1000 монет = 1 Gram.','رسوم التحويل: 3 عملات. السعر: 1000 عملة = 1 Gram.'],'Proceed':['Продолжить','متابعة'],
+'Cash out your Gram balance.':['Выведите свой баланс Gram.','اسحب رصيد Gram الخاص بك.'],'Complete all requirements to unlock withdrawals.':['Выполните все условия, чтобы открыть вывод.','أكمل جميع المتطلبات لفتح السحب.'],
+'Join the official channel':['Вступить в официальный канал','الانضمام إلى القناة الرسمية'],'Gram address':['Адрес Gram','عنوان Gram'],'Enter your Gram address':['Введите ваш адрес Gram','أدخل عنوان Gram الخاص بك'],
+'Memo (if any)':['Мемо (если есть)','المذكرة (إن وجدت)'],'Optional':['Необязательно','اختياري'],'Amount (Gram)':['Сумма (Gram)','المبلغ (Gram)'],
+'Successful':['Успешно','تمت العملية'],'Your withdrawal will be completed within 3 hours at most.':['Ваш вывод будет выполнен не более чем за 3 часа.','سيكتمل سحبك خلال 3 ساعات كحد أقصى.'],'Done':['Готово','تم'],
+'Ecosystem':['Экосистема','المنظومة'],'One ecosystem. Three powerful bots.':['Одна экосистема. Три мощных бота.','منظومة واحدة. ثلاثة بوتات قوية.'],'One ecosystem, three bots':['Одна экосистема, три бота','منظومة واحدة، ثلاثة بوتات'],
+'Earn rewards, mine tokens and win prizes. Every bot is connected, so your activity keeps growing across the whole ecosystem.':['Зарабатывайте награды, майните токены и выигрывайте призы. Все боты связаны, поэтому ваша активность растёт во всей экосистеме.','اكسب المكافآت وعدّن الرموز واربح الجوائز. جميع البوتات مترابطة، لذلك ينمو نشاطك في المنظومة كلها.'],
+'Task to earn. Complete simple tasks, promote your own channel, bot or link and collect rewards.':['Задания с заработком. Выполняйте простые задания, продвигайте свой канал, бот или ссылку и получайте награды.','مهام مقابل مكافآت. أنجز مهام بسيطة وروّج لقناتك أو بوتك أو رابطك واجمع المكافآت.'],
+'The mining bot where LOR token is mined. Keep mining and keep growing.':['Бот для майнинга, где добывается токен LOR. Майните и растите.','بوت التعدين الذي يُعدَّن فيه رمز LOR. واصل التعدين وواصل النمو.'],
+'The core bot of the ecosystem. It runs giveaways and lotteries for the whole community.':['Главный бот экосистемы. Проводит розыгрыши и лотереи для всего сообщества.','البوت الأساسي للمنظومة. يدير السحوبات واليانصيب لكامل المجتمع.'],
+'Task to Earn':['Задания за награду','مهام مقابل مكافآت'],'Mining · LOR':['Майнинг · LOR','تعدين · LOR'],'Core · Giveaway & Lottery':['Ядро · Розыгрыши и лотереи','الأساسي · سحوبات ويانصيب'],
+'Your Task Status':['Статус ваших заданий','حالة مهامك'],'Track the progress of every task you posted.':['Следите за прогрессом каждого вашего задания.','تابع تقدم كل مهمة نشرتها.'],'Posted':['Создано','المنشورة'],'Active':['Активные','النشطة'],'Actions done':['Выполнено','الإجراءات المنجزة'],'LIVE':['ОНЛАЙН','مباشر'],'Completed':['Завершено','مكتملة'],
+'No tasks posted yet':['Заданий пока нет','لم تنشر أي مهمة بعد'],'Post your first task to start growing your channel, bot or link.':['Создайте первое задание, чтобы продвигать свой канал, бот или ссылку.','انشر مهمتك الأولى لتنمية قناتك أو بوتك أو رابطك.'],
+'Delete this task?':['Удалить задание?','حذف هذه المهمة؟'],'This task will be removed from the feed of all users. This cannot be undone.':['Задание исчезнет из ленты всех пользователей. Это действие нельзя отменить.','ستُزال هذه المهمة من قائمة جميع المستخدمين. لا يمكن التراجع عن ذلك.'],'Cancel':['Отмена','إلغاء'],'Delete':['Удалить','حذف'],
+'Referrals':['Рефералы','الإحالات'],'10 Coins Per Referral':['10 монет за каждого реферала','10 عملات لكل إحالة'],'Invite your friends and watch your balance grow.':['Приглашайте друзей и наблюдайте, как растёт ваш баланс.','ادعُ أصدقاءك وراقب نمو رصيدك.'],
+'Your referral link':['Ваша реферальная ссылка','رابط الإحالة الخاص بك'],'Share link':['Поделиться ссылкой','مشاركة الرابط'],'Referred':['Приглашено','المُحالون'],'Valid':['Валидные','صالحة'],'Coins earned':['Заработано монет','العملات المكتسبة'],'Pending':['В ожидании','قيد الانتظار'],
+'A referral becomes valid after completing 10 tasks. You earn 10 coins for each valid referral, added automatically.':['Реферал становится валидным после выполнения 10 заданий. За каждого валидного реферала вы получаете 10 монет автоматически.','تصبح الإحالة صالحة بعد إكمال 10 مهام. تحصل على 10 عملات لكل إحالة صالحة وتُضاف تلقائياً.'],
+'No referrals yet':['Рефералов пока нет','لا توجد إحالات بعد'],'Share your referral link to invite friends and earn 10 coins for each valid referral.':['Поделитесь реферальной ссылкой, чтобы приглашать друзей и получать 10 монет за каждого валидного реферала.','شارك رابط الإحالة لدعوة الأصدقاء وكسب 10 عملات لكل إحالة صالحة.']
+};
+const TP=[
+[/^(\d+) \/ (\d+) completed$/,['$1 / $2 выполнено','$1 / $2 مكتملة']],
+[/^(\d+) left$/,['осталось $1','متبقي $1']],
+[/^(\d+)\/(\d+) tasks$/,['$1/$2 заданий','$1/$2 مهمة']],
+[/^(\d+) Valid$/,['$1 валидных','$1 صالحة']],
+[/^Minimum ([\d.]+)$/,['Минимум $1','الحد الأدنى $1']],
+[/^Balance: (\d+) C$/,['Баланс: $1 C','الرصيد: $1 C']],
+[/^Available: ([\d.]+) Gram\. No withdrawal fee\.$/,['Доступно: $1 Gram. Без комиссии за вывод.','المتاح: $1 Gram. بدون رسوم سحب.']],
+[/^Complete at least (\d+) tasks \((\d+)\/(\d+)\)$/,['Выполнить минимум $1 заданий ($2/$3)','أكمل $1 مهمة على الأقل ($2/$3)']],
+[/^Have (\d+) valid referrals \((\d+)\/(\d+)\)$/,['Иметь $1 валидных рефералов ($2/$3)','امتلك $1 إحالات صالحة ($2/$3)']],
+[/^Pay ([\d.]+) Gram$/,['Оплатить $1 Gram','ادفع $1 Gram']],
+[/^Send exactly ([\d.]+) Gram to the address below, then tap Check\.$/,['Отправьте ровно $1 Gram на адрес ниже, затем нажмите «Проверить».','أرسل $1 Gram بالضبط إلى العنوان أدناه ثم اضغط تحقق.']],
+[/^\+(\d+) C added to your balance$/,['+$1 C добавлено на баланс','تمت إضافة +$1 C إلى رصيدك']],
+[/^([\d.]+) Gram added$/,['$1 Gram добавлено','تمت إضافة $1 Gram']],
+[/^Minimum convert is (\d+) coins$/,['Минимум для обмена — $1 монет','الحد الأدنى للتحويل $1 عملة']],
+[/^Minimum withdrawal is ([\d.]+) Gram$/,['Минимальный вывод — $1 Gram','الحد الأدنى للسحب $1 Gram']],
+[/^Act & Gain · Version (.+)$/,['Act & Gain · Версия $1','Act & Gain · الإصدار $1']],
+[/^Version (.+)$/,['Версия $1','الإصدار $1']]
+];
+const ORIG=new WeakMap();
+function trs(s){const i=LANG==='ru'?0:1,d=D[s];if(d)return d[i];for(const [re,t] of TP)if(re.test(s))return s.replace(re,t[i]);return null}
+function tNode(n){
+  if(LANG==='en')return;
+  const v=n.nodeValue,s=v.trim();if(!s||!/[A-Za-z]/.test(s))return;
+  const r=trs(s);if(r==null||r===s)return;
+  ORIG.set(n,v);n.nodeValue=v.replace(s,()=>r);
+}
+const T=s=>LANG==='en'?s:(trs(s)||s);
+function tAttr(e){
+  if(!e.dataset.ph)e.dataset.ph=e.getAttribute('placeholder');
+  e.setAttribute('placeholder',LANG==='en'?e.dataset.ph:(trs(e.dataset.ph)||e.dataset.ph));
+}
+function tTree(root){
+  if(!root)return;
+  if(root.nodeType===3){tNode(root);return}
+  if(root.nodeType!==1)return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){if(ORIG.has(n)){n.nodeValue=ORIG.get(n);ORIG.delete(n)}if(LANG!=='en')tNode(n)}
+  root.querySelectorAll('[placeholder]').forEach(tAttr);
+  if(root.hasAttribute&&root.hasAttribute('placeholder'))tAttr(root);
+}
+const OB=new MutationObserver(ms=>{
+  OB.disconnect();
+  ms.forEach(m=>{
+    if(m.type==='characterData')tNode(m.target);
+    else if(m.type==='attributes'){if(m.target.dataset.ph!==m.target.getAttribute('placeholder')&&LANG!=='en')tAttr(m.target)}
+    else m.addedNodes.forEach(tTree);
+  });
+  att();
+});
+function att(){OB.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['placeholder']})}
+function setLang(l){
+  LANG=l;try{localStorage.setItem('ag_lang',l)}catch(e){}
+  const h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';
+  OB.disconnect();tTree(document.body);att();
+}
+function pickL(k){PL=k;document.querySelectorAll('.lo').forEach(b=>b.classList.toggle('on',b.dataset.l===k))}
+function saveL(){setLang(PL);cls()}
+function langUI(){
+  PL=LANG;
+  opn(`${mh('Language')}<div class="lgl">${Object.keys(LN).map(k=>`<button class="lo ${k===LANG?'on':''}" data-l="${k}" onclick="pickL('${k}')"><span class="lf">${k.toUpperCase()}</span>${LN[k]}<i class="fa-solid fa-circle-check"></i></button>`).join('')}</div><p class="soon"><i class="fa-solid fa-hourglass-half"></i>More coming soon</p><button class="btn" onclick="saveL()">Save</button>`);
+}
+att();if(LANG!=='en')setLang(LANG);
+
+go('home');cgo(0);
+$('.sp-v').textContent='Version '+VER;
+(function(){const MS=5200,t0=performance.now(),f=$('#lf'),pc=$('#lp');
+const tick=n=>{const p=Math.min(1,(n-t0)/MS),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2,v=Math.round(e*100);f.style.width=v+'%';pc.textContent=v+'%';if(p<1)requestAnimationFrame(tick);else setTimeout(()=>$('#splash').classList.add('out'),350)};
+requestAnimationFrame(tick)})();
+</script>
+</body>
+</html>
